@@ -1,0 +1,51 @@
+:hivemq-link: https://www.hivemq.com
+:hivemq-extension-docs: {hivemq-link}/docs/extensions/latest/
+:hivemq-mqtt-toolbox: {hivemq-link}/mqtt-toolbox
+:hivemq-support: {hivemq-link}/support/
+:hivemq-testcontainer: https://github.com/hivemq/hivemq-testcontainer
+:hivemq-mqtt-client: https://github.com/hivemq/hivemq-mqtt-client
+
+= HiveMQ 4 Prevent Publish Extension
+
+image:https://img.shields.io/badge/Extension_Type-Demonstration-orange?style=for-the-badge[Extension Type]
+
+== Purpose
+
+This Prevent Publish extension registers a PublishInboundInterceptor to prevent every Publish with the topic like 'prevent' or Client ID like 'prevent'.
+
+We strongly recommend to read the {hivemq-extension-docs}[HiveMQ Extension Documentation] to grasp the core concepts of HiveMQ extension development.
+
+== Installation
+
+. Clone this repository into a Java 11 Gradle project.
+. Execute the Gradle task `hivemqExtensionZip` to build the extension.
+. Move the file: `build/hivemq-extension/prevent-publish-extension-4.21.0.zip` to the directory: `HIVEMQ_HOME/extensions`
+. Unzip the file.
+. Start HiveMQ.
+
+== First Steps
+
+=== Manual Testing
+
+Publish a message with an {hivemq-mqtt-toolbox}[MQTT client] of your choice, qos 1, to topic `prevent` or from a Client ID `prevent`.
+You should see the publish has failed with Reason String `It is not allowed to publish to topic: prevent`.
+
+== Next Steps
+
+Awesome, you got your first HiveMQ 4 extension working.
+
+Now read the {hivemq-extension-docs}[HiveMQ Extension Documentation] to see what extensions can do.
+
+== Need Help?
+
+If you encounter any problems, we are happy to help.
+The best place to get in contact is our {hivemq-support}[support^].
+
+== Contributing
+
+If you want to contribute to HiveMQ Hello World Extension, see the link:CONTRIBUTING.md[contribution guidelines].
+
+== License
+
+HiveMQ Hello World Extension is licensed under the `APACHE LICENSE, VERSION 2.0`.
+A copy of the license can be found link:LICENSE[here].
