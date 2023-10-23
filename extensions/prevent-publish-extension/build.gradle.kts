@@ -5,14 +5,14 @@ plugins {
 }
 
 group = "com.hivemq.extensions"
-description = "HiveMQ 4 Hello World Extension - a simple reference for all extension developers"
+description = "HiveMQ 4 Prevent Publish Extension - a simple reference for all extension developers"
 
 hivemqExtension {
-    name.set("Hello World Extension")
+    name.set("Prevent Publish Extension")
     author.set("HiveMQ")
     priority.set(1000)
     startPriority.set(1000)
-    mainClass.set("$group.helloworld.HelloWorldMain")
+    mainClass.set("$group.PreventPublishMain")
     sdkVersion.set("$version")
 
     resources {
