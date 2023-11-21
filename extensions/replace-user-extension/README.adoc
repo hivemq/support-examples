@@ -19,6 +19,8 @@ It checks if the "UserName" field in the CONNECT packet is empty.
 If the "UserName" is found to be empty, the extension intervenes and modifies the CONNECT packet.
 It sets the "UserName" to `default` and the "Password" field to `default`.
 
+image::flowchart.png[]
+
 == Installation
 
 . Clone this repository into a Java 11 Gradle project.
