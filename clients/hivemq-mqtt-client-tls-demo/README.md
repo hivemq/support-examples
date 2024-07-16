@@ -43,13 +43,13 @@ Update or insert a TLS listener to the HiveMQ configuration file:
            <name>tls-tcp-listener</name>
            <tls>
                <keystore>
-                   <path>path/to/broker-X-keystore.ext</path>
+                   <path>path/to/broker-example1-keystore.jks</path>
                    <password>changeme</password>
                    <private-key-password>changeme</private-key-password>
                </keystore>
                <client-authentication-mode>OPTIONAL</client-authentication-mode>
                <truststore>
-                   <path>path/to/broker-all-truststore.ext</path>
+                   <path>path/to/broker-all-truststore.jks</path>
                    <password>changeme</password>
                </truststore>
            </tls>
@@ -75,23 +75,7 @@ build/libs/hivemq-mqtt-client-tls-demo-1.0-SNAPSHOT-all.jar
 ### 5. Run the client:
 
    ```sh
-   #!/bin/bash
-   
-   # Set environment variables
-   export KEYSTORE_PATH="/path/to/keystore"
-   export KEYSTORE_PASS="your_keystore_password"
-   export PRIVATE_KEY_PASS="your_private_key_password"
-   export TRUSTSTORE_PATH="/path/to/truststore"
-   export TRUSTSTORE_PASS="your_truststore_password"
-   export MQTT_SERVER="your_mqtt_server"
-   export MQTT_PORT="8883"
-   export MQTT_QOS="1"
-   export MQTT_TOPIC="your_topic"
-   export KEYSTORE_TYPE="JKS"
-   export VERIFY_HOSTNAME="true"
-   
-   # Run the Java program
-   java -jar build/libs/hivemq-mqtt-client-tls-demo-1.0-SNAPSHOT-all.jar
+   ./01_test_java_client.sh
    ```
 
 ## Additional Information
