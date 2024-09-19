@@ -322,7 +322,7 @@ try {
 }
 
 # Create and start HiveMQ service
-Write-Host "2) Creating HiveMQ service..."
+Write-Host "9) Creating HiveMQ service..."
 try {
     $downloadPath = "$tempPath\nssm-2.24-101-g897c7ad.zip"
     $webClient.DownloadFile($links.NSSM_Link, $downloadPath)
@@ -365,7 +365,7 @@ try {
         Start-Process -FilePath $nssmPath -ArgumentList $cmd.Arguments -Wait -ErrorAction Stop *> $null
         Write-Host "$($cmd.Description)" -ForegroundColor Cyan
     }
-    Write-Host "3) Starting HiveMQ service..."
+    Write-Host "10) Starting HiveMQ service..."
     Start-Sleep -Seconds 5
     Start-Process -FilePath $nssmPath -ArgumentList 'start', 'HiveMQService' | Out-Null
     While ($true) {
