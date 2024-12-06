@@ -5,7 +5,9 @@ import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5ClientBuilder;
 
-import javax.net.ssl.*;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -65,7 +67,7 @@ public class TlsDemo {
                 .serverHost(hostname)
                 .serverPort(port)
                 ;
-        if (KEYSTORE_ALIAS.isEmpty()){
+        if ((KEYSTORE_ALIAS == null )|| KEYSTORE_ALIAS.isEmpty()) {
             System.out.println("Loading whole keyStore: " + KEYSTORE_PATH);
             clientBuilder.sslConfig()
                     .keyManagerFactory(keyManagerFromKeystore(new File(KEYSTORE_PATH), KEYSTORE_PASS, PRIVATE_KEY_PASS))
@@ -76,7 +78,8 @@ public class TlsDemo {
                     .keyManagerFactory(keyManagerFromKeystore(new File(KEYSTORE_PATH), KEYSTORE_PASS, PRIVATE_KEY_PASS, KEYSTORE_ALIAS))
                     .applySslConfig();
         }
-        if (TRUSTSTORE_ALIAS.isEmpty()){
+
+        if ((TRUSTSTORE_ALIAS == null)||TRUSTSTORE_ALIAS.isEmpty()) {
             System.out.println("Loading whole truststore: " + TRUSTSTORE_PATH);
             clientBuilder.sslConfig()
                     .trustManagerFactory(trustManagerFromKeystore(new File(TRUSTSTORE_PATH), TRUSTSTORE_PASS))
@@ -88,14 +91,14 @@ public class TlsDemo {
                     .applySslConfig();
         }
         if (!verifyHostname) {
-            System.out.println("Building client to bypass hostname verification");
+            System.out.println("Building the client to bypass hostname verification!");
 
             clientBuilder.sslConfig().hostnameVerifier((hostname, session) -> {
-                System.out.println("Not verifying hostname: " + hostname);
+                System.out.println("Trusting without hostname verification to: " + hostname);
                 return true;
             }).applySslConfig();
         } else {
-            System.out.println("Building client with hostname verification");
+            System.out.println("Building the client to perform hostname verification as usual.");
         }
 
         client = clientBuilder.buildBlocking();
@@ -160,7 +163,7 @@ public class TlsDemo {
         try (final FileInputStream fileInputStream = new FileInputStream(trustStoreFile)) {
             final KeyStore originalKeyStore = KeyStore.getInstance(TRUSTSTORE_TYPE);
             originalKeyStore.load(fileInputStream, trustStorePassword.toCharArray());
-            
+
             final KeyStore filteredKeyStore = KeyStore.getInstance(TRUSTSTORE_TYPE);
             filteredKeyStore.load(null, null); // Initialize an empty KeyStore
 
@@ -195,7 +198,7 @@ public class TlsDemo {
             // Load the original keyStore
             final KeyStore originalKeyStore = KeyStore.getInstance(KEYSTORE_TYPE);
             originalKeyStore.load(fileInputStream, keyStorePassword.toCharArray());
-            
+
             // Create a new keyStore
             final KeyStore filteredKeyStore = KeyStore.getInstance(KEYSTORE_TYPE);
             filteredKeyStore.load(null, null);
@@ -227,7 +230,7 @@ public class TlsDemo {
         try (final FileInputStream fileInputStream = new FileInputStream(keyStoreFile)) {
             final KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
             keyStore.load(fileInputStream, keyStorePassword.toCharArray());
-            
+
             final KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
             kmf.init(keyStore, privateKeyPassword.toCharArray());
             return kmf;
