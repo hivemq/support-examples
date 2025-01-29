@@ -15,7 +15,7 @@
 # Accepts HiveMQ version and installation folder as input from the command line, with default values
 param (
     # Default HiveMQ version if not provided
-    [string]$hivemqVersion = "4.35.0",
+    [string]$hivemqVersion = "4.36.0",
     # Default HiveMQ installation folder if not provided
     [string]$installationFolder = "C:\hivemq"
 )
@@ -34,9 +34,9 @@ $utf8NoBom = New-Object System.Text.UTF8Encoding $False
 
 # Set Java version to be downloaded and installed
 if ($hivemqVersion -ge "4.28.0") {
-    $jdkVersion = "21.0.4+7"
+    $jdkVersion = "21.0.6+7"
 } else {
-    $jdkVersion = "11.0.24+8"
+    $jdkVersion = "11.0.26+4"
 }
 
 # Define download links
