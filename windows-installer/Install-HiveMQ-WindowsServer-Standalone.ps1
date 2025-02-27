@@ -15,7 +15,7 @@
 # Accepts HiveMQ version and installation folder as input from the command line, with default values
 param (
     # Default HiveMQ version if not provided
-    [string]$hivemqVersion = "4.36.0",
+    [string]$hivemqVersion = "4.37.0",
     # Default HiveMQ installation folder if not provided
     [string]$installationFolder = "C:\hivemq"
 )
