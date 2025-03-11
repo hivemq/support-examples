@@ -43,6 +43,7 @@ if ($hivemqVersion -ge "4.28.0") {
 $links = @{
     OpenJDK_Link = "https://api.adoptium.net/v3/installer/version/jdk-$jdkVersion/windows/x64/jre/hotspot/normal/eclipse?project=jdk"
     HiveMQ_Link = "https://releases.hivemq.com/hivemq-$hivemqVersion.zip"
+    HiveMQ_SHA_Link = "https://releases.hivemq.com/hivemq-$hivemqVersion.zip.sha256"
     NSSM_Link = "https://nssm.cc/ci/nssm-2.24-101-g897c7ad.zip"
     MQTTCLI_Link = "https://github.com/hivemq/mqtt-cli/releases/download/v$hivemqVersion/mqtt-cli-$hivemqVersion-win.zip"
 }
@@ -115,12 +116,27 @@ try {
 # Install HiveMQ
 Write-Host "3) Installing HiveMQ $hivemqVersion..."
 try {
+    $SHADownloadPath = "$tempPath\hivemq-$hivemqVersion.zip.sha256"
+    $webClient.DownloadFile($links.HiveMQ_SHA_Link, $SHADownloadPath)
+    if (Test-Path $SHADownloadPath) {
+        Write-Host "HiveMQ $hivemqVersion SHA Checksum download was successful!" -ForegroundColor Green
+    } else {
+        throw "HiveMQ $hivemqVersion SHA Checksum download failed."
+    }
     $downloadPath = "$tempPath\hivemq-$hivemqVersion.zip"
     $webClient.DownloadFile($links.HiveMQ_Link, $downloadPath)
     if (Test-Path $downloadPath) {
         Write-Host "HiveMQ $hivemqVersion download was successful!" -ForegroundColor Green
     } else {
         throw "HiveMQ $hivemqVersion download failed."
+    }
+    # Verify checksum
+    $sourceChecksum = Get-Content -Path $SHADownloadPath -Raw
+    $generatedChecksum = @(certutil -hashfile $downloadPath SHA256)
+    if ($sourceChecksum -eq $generatedChecksum[1]) {
+        Write-Host "Checksum validation was successful!" -ForegroundColor Green
+    } else {
+        throw "Checksum validation failed."
     }
     $extractedFolder = "$tempPath\"
     Expand-Archive -Path $downloadPath -DestinationPath $extractedFolder -Force
@@ -135,7 +151,10 @@ try {
     Write-Host "Failed to install HiveMQ $hivemqVersion." -ForegroundColor Red
     throw
 } finally {
-    if ((Test-Path $downloadPath) -or (Test-Path "$tempPath\hivemq-$hivemqVersion")) {
+    if ((Test-Path $SHADownloadPath) -or (Test-Path $downloadPath) -or (Test-Path "$tempPath\hivemq-$hivemqVersion")) {
+        if (Test-Path $SHADownloadPath) {
+            Remove-Item -Path $SHADownloadPath -Force
+        }
         if (Test-Path $downloadPath) {
             Remove-Item -Path $downloadPath -Force
         }
