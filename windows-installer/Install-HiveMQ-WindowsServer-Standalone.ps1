@@ -136,7 +136,7 @@ try {
     if ($sourceChecksum -eq $generatedChecksum[1]) {
         Write-Host "Checksum validation was successful!" -ForegroundColor Green
     } else {
-        throw "Checksum validation failed."
+        throw "Checksum validation failed. Expected: $sourceChecksum Actual: $generatedChecksum[1]"
     }
     $extractedFolder = "$tempPath\"
     Expand-Archive -Path $downloadPath -DestinationPath $extractedFolder -Force
