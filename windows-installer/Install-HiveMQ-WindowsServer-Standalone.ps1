@@ -10,10 +10,6 @@
 # 3) Navigate to the folder where you downloaded the .ps1 script and execute it.
 #    .\Install-HiveMQ-WindowsServer-Standalone.ps1
 #
-# If the Windows Server lacks outbound internet access or if the required download 
-# domains are blocked by any company network policy, this script will automatically
-# fall back to using local/offline installation files located in the same directory.
-#
 # If the Windows Server lacks outbound internet access, or if the required download
 # domains are blocked by a company network policy, this script will automatically
 # fall back to using local offline installation files located in the same directory.
