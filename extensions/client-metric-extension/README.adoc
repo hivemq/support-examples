@@ -1,0 +1,75 @@
+:hivemq-link: https://www.hivemq.com
+:hivemq-extension-docs: {hivemq-link}/docs/extensions/latest/
+:hivemq-mqtt-toolbox: {hivemq-link}/mqtt-toolbox
+:hivemq-support: {hivemq-link}/support/
+:hivemq-testcontainer: https://github.com/hivemq/hivemq-testcontainer
+:hivemq-mqtt-client: https://github.com/hivemq/hivemq-mqtt-client
+
+= HiveMQ 4 Hello Client Metric Extension
+
+image:https://img.shields.io/badge/Extension_Type-Demonstration-orange?style=for-the-badge[Extension Type]
+image:https://img.shields.io/github/v/release/hivemq/hivemq-hello-world-extension?style=for-the-badge[GitHub release (latest by date),link=https://github.com/hivemq/hivemq-hello-world-extension/releases/latest]
+image:https://img.shields.io/github/license/hivemq/hivemq-hello-world-extension?style=for-the-badge&color=brightgreen[GitHub,link=LICENSE]
+image:https://img.shields.io/github/actions/workflow/status/hivemq/hivemq-hello-world-extension/check.yml?branch=master&style=for-the-badge[GitHub Workflow Status,link=https://github.com/hivemq/hivemq-hello-world-extension/actions/workflows/check.yml?query=branch%3Amaster]
+
+== Purpose
+
+This Hello Client Metric extension is an example of how to add your own metric to HiveMQ Broker Metrics.
+
+- adds metric `com.hivemq.client1.message-queue-size`;
+
+== Installation
+
+. Clone this repository.
+. Set Java 11 for the Gradle.
+. Set JDK 21 for the extension.
+. Execute the Gradle task `hivemqExtensionZip` to build the extension.
+
+    ./gradlew clean hivemqExtensionZip
+
+. Unzip the the file: `build/hivemq-extension/hivemq-hello-client-metric-extension.zip` to the directory: `HIVEMQ_HOME/extensions`
+
+    unzip build/hivemq-extension/hivemq-hello-client-metric-extension.zip -d $HIVEMQ_HOME/extensions
+
+. Enable HiveMQ Broker REST API via http port 8888.
+. Enable HiveMQ Prometheus Extension.
+. Start HiveMQ.
+
+== First Steps
+
+=== Manual Testing
+
+Connect with an {hivemq-mqtt-toolbox}[MQTT client] of your choice using Client ID `client1`.
+
+    mqtt subscrie --identifier client1 --topic test --qos 1 --debug
+
+Verify the new metric `com_hivemq_client1_message_queue_size` is present.
+
+    curl http://localhost:9399/metrics | grep com_hivemq_client1_message_queue_size
+
+=== Automatic Testing
+
+Execute the `MetricPresentIT` for automatic testing of the extension.
+It uses the {hivemq-testcontainer}[HiveMQ Testcontainer] to automatically package, deploy and run the extension inside a HiveMQ docker container.
+The test creates a {hivemq-mqtt-client}[HiveMQ MQTT Client] to connect to the broker.
+It checks whether the metric `com_hivemq_client1_message_queue_size` is present.
+
+== Next Steps
+
+Awesome, you got your first HiveMQ 4 custom metric working.
+
+Now read the {hivemq-extension-docs}[HiveMQ Extension Documentation] to see what extensions can do.
+
+== Need Help?
+
+If you encounter any problems, we are happy to help.
+The best place to get in contact is our {hivemq-support}[support^].
+
+== Contributing
+
+If you want to contribute to HiveMQ Hello World Extension, see the link:CONTRIBUTING.md[contribution guidelines].
+
+== License
+
+HiveMQ Hello Client Metric Extension is licensed under the `APACHE LICENSE, VERSION 2.0`.
+A copy of the license can be found link:LICENSE[here].
