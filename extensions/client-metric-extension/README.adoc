@@ -41,7 +41,7 @@ This Hello Client Metric extension is an example of how to add your own metric t
 
 Connect with an {hivemq-mqtt-toolbox}[MQTT client] of your choice using Client ID `client1`.
 
-    mqtt subscrie --identifier client1 --topic test --qos 1 --debug
+    mqtt subscribe --identifier client1 --topic test --qos 1 --debug
 
 Verify the new metric `com_hivemq_client1_message_queue_size` is present.
 
